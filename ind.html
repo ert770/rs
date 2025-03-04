@@ -82,6 +82,18 @@
             100% { transform: translateY(0); }
         }
 
+        /* 🔹 進度條樣式 */
+        .progress-bar {
+            width: 80%;
+            max-width: 400px;
+            height: 20px;
+            background-color: #3A3A3A;
+            border: 3px solid white;
+            margin: 15px auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -90,6 +102,11 @@
     <img src="https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png" alt="Minecraft Logo">
     <p id="tip"></p>
     <p id="loading">Loading</p>
+
+    <!-- 🔹 進度條 -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+    </div>
 </div>
 <script>
     // 隨機顯示 Minecraft 提示文字
