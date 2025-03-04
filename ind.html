@@ -125,8 +125,27 @@
         tipElement.innerText = tips[randomIndex];
     }
 
+    // 進度條動畫
+    function animateProgressBar() {
+        let progress = 0;
+        const progressBar = document.getElementById("progress-fill");
+
+        const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 10) + 5; // 每次增加 5~15%
+            if (progress > 100) progress = 100;
+
+            progressBar.style.width = progress + "%";
+
+            if (progress === 100) {
+                clearInterval(interval);
+            }
+        }, 500);
+    }
     // 等頁面載入後執行
-    window.onload = showRandomTip;
+    window.onload = function() {
+        showRandomTip();
+        animateProgressBar();
+    };
 
 </script>
 </body>
