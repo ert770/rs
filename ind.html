@@ -8,7 +8,7 @@
     <title>Minecraft - Loading Screen</title>
 
     <!-- 草方塊圖示 -->
-    <link rel="icon" type="image/png" href="https://www.minecraft.net/etc.clientlibs/minecraft/clientlibs/main/resources/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="https://pic.baike.soso.com/ugc/baikepic2/13594/20201002115917-1036601850_jpeg_602_553_61654.jpg/0">
 
     <!-- Press Start 2P -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -50,7 +50,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgb(182, 182, 182, 0.7);
+            background-color: rgb(182, 182, 182, 0.75);
             text-shadow: 3px 2px 0px rgb(51, 51, 51);
             color: #ffffff;
             padding: 20px;
@@ -190,18 +190,29 @@
         tipElement.innerText = tips[randomIndex];
     }
 
-    // 進度條動畫
+    // 進度條動畫（循環）
     function startProgressBar() {
         let progress = 0;
         let interval = setInterval(() => {
             if (progress < 20) {
                 let cell = document.getElementById(`cell-${progress + 1}`);
-                cell.style.background = "#34c924"; // 變成綠色
+                cell.style.background = "#34c924"; // 綠色（讀取進度）
                 progress++;
             } else {
-                clearInterval(interval); // 讀取完成，停止計時器
+                // 清空進度條，重新開始
+                setTimeout(() => {
+                    resetProgressBar();
+                    progress = 0;
+                }, 2000); // 等待 2 秒後重置
             }
-        }, 2000); // 每2秒更新一次
+        }, 2000);
+    }
+
+    // 重置進度條
+    function resetProgressBar() {
+        for (let i = 1; i <= 20; i++) {
+            document.getElementById(`cell-${i}`).style.background = "#777777"; // 回復灰色
+        }
     }
 
     // 等頁面載入後執行
