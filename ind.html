@@ -2,9 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>pap</title>
+    <meta name="description" content="A fun Minecraft-themed waiting screen with random tips.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Your Name">
+
+    <title>Minecraft - Loading Screen</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://www.minecraft.net/etc.clientlibs/minecraft/clientlibs/main/resources/apple-touch-icon.png">
+
+    <!-- Google Font for pixelated effect -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- JavaScript -->
+    <script defer src="script.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            background: url('https://www.minecraft.net/content/dam/games/minecraft/key-art/BrandRefresh_Minecraft2021_OneBrand_KeyArt.png') center/cover;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            color: white;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 4px 4px 0px #3A7326;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border: 10px solid black;
+            image-rendering: pixelated;
+            box-shadow: 5px 5px 0px #4A752C;
+            display: inline-block;
+        }
+
+        .container img {
+            width: 100%;
+            max-width: 400px;
+            border: 3px solid #FFFFFF;
+        }
+
+        .container p {
+            margin-top: 15px;
+            font-style: italic;
+            color: #F1C40F;
+            animation: float 2s infinite ease-in-out;
+        }
+
+        /* Loading animation */
+        @keyframes dots {
+            0% { content: "."; }
+            33% { content: ".."; }
+            66% { content: "..."; }
+        }
+
+        #loading::after {
+            content: ".";
+            animation: dots 1s infinite steps(1);
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+    </style>
 </head>
 <body>
+<div class="container">
+    <h1>Minecraft</h1>
+    <img src="https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png" alt="Minecraft Logo">
+    <p id="tip"></p>
+    <p id="loading">Loading</p>
+</div>
+<script>
+    // 隨機顯示 Minecraft 提示文字
+    const tips = [
+        "Don't dig straight down!",
+        "Creepers gonna creep...",
+        "Punching trees gives you wood.",
+        "Diamonds are a miner's best friend!",
+        "Use torches to keep mobs away.",
+        "Build a house before nightfall!"
+    ];
 
+    function showRandomTip() {
+        const tipElement = document.getElementById("tip");
+        const randomIndex = Math.floor(Math.random() * tips.length);
+        tipElement.innerText = tips[randomIndex];
+    }
+
+    // 等頁面載入後執行
+    window.onload = showRandomTip;
+
+</script>
 </body>
 </html>
