@@ -84,16 +84,22 @@
 
         /* 🔹 進度條樣式 */
         .progress-bar {
-            width: 80%;
-            max-width: 400px;
+            width: 400px;
             height: 20px;
-            background-color: #3A3A3A;
-            border: 3px solid white;
-            margin: 15px auto;
-            position: relative;
-            overflow: hidden;
-            border-radius: 5px;
+            background: #cccccc; /* 淺灰色背景 */
+            border: 3px solid #4A752C;
+            margin-top: 15px;
+            display: flex;
+            gap: 2px; /* 每格之間有間隔 */
         }
+
+        /* 單個進度格 */
+        .progress-cell {
+            width: calc((100% - 19 * 2px) / 20); /* 計算20格並扣掉間隙 */
+            height: 100%;
+            background: #777777; /* 預設未讀取是深灰色 */
+        }
+
     </style>
 </head>
 <body>
@@ -105,7 +111,27 @@
 
     <!-- 🔹 進度條 -->
     <div class="progress-bar">
-        <div class="progress-fill" id="progress-fill"></div>
+        <!-- 產生20個小格子 -->
+        <div class="progress-cell" id="cell-1"></div>
+        <div class="progress-cell" id="cell-2"></div>
+        <div class="progress-cell" id="cell-3"></div>
+        <div class="progress-cell" id="cell-4"></div>
+        <div class="progress-cell" id="cell-5"></div>
+        <div class="progress-cell" id="cell-6"></div>
+        <div class="progress-cell" id="cell-7"></div>
+        <div class="progress-cell" id="cell-8"></div>
+        <div class="progress-cell" id="cell-9"></div>
+        <div class="progress-cell" id="cell-10"></div>
+        <div class="progress-cell" id="cell-11"></div>
+        <div class="progress-cell" id="cell-12"></div>
+        <div class="progress-cell" id="cell-13"></div>
+        <div class="progress-cell" id="cell-14"></div>
+        <div class="progress-cell" id="cell-15"></div>
+        <div class="progress-cell" id="cell-16"></div>
+        <div class="progress-cell" id="cell-17"></div>
+        <div class="progress-cell" id="cell-18"></div>
+        <div class="progress-cell" id="cell-19"></div>
+        <div class="progress-cell" id="cell-20"></div>
     </div>
 </div>
 <script>
@@ -116,35 +142,45 @@
         "Punching trees gives you wood.",
         "Diamonds are a miner's best friend!",
         "Use torches to keep mobs away.",
-        "Build a house before nightfall!"
+        "Build a house before nightfall!",
+        "The Endermen don’t like eye contact!",
+        "Gold tools break easily but are super fast!",
+        "Fishing is a great way to get rare items.",
+        "Redstone is the key to automation!"
     ];
 
+    // 顯示隨機提示
     function showRandomTip() {
         const tipElement = document.getElementById("tip");
-        const randomIndex = Math.floor(Math.random() * tips.length);
+
+        // 產生新的隨機索引
+        let randomIndex = Math.floor(Math.random() * tips.length);
+
+        // 更新畫面上的提示
         tipElement.innerText = tips[randomIndex];
     }
 
     // 進度條動畫
-    function animateProgressBar() {
+    function startProgressBar() {
         let progress = 0;
-        const progressBar = document.getElementById("progress-fill");
-
-        const interval = setInterval(() => {
-            progress += Math.floor(Math.random() * 10) + 5; // 每次增加 5~15%
-            if (progress > 100) progress = 100;
-
-            progressBar.style.width = progress + "%";
-
-            if (progress === 100) {
-                clearInterval(interval);
+        let interval = setInterval(() => {
+            if (progress < 20) {
+                let cell = document.getElementById(`cell-${progress + 1}`);
+                cell.style.background = "#34c924"; // 變成綠色
+                progress++;
+            } else {
+                clearInterval(interval); // 讀取完成，停止計時器
             }
-        }, 500);
+        }, 2000); // 每2秒更新一次
     }
+
     // 等頁面載入後執行
     window.onload = function() {
         showRandomTip();
-        animateProgressBar();
+        startProgressBar();
+
+        // 設置每 2 秒更新一次提示
+        setInterval(showRandomTip, 2000);
     };
 
 </script>
