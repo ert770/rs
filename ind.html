@@ -13,11 +13,6 @@
     <!-- Press Start 2P -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    <!-- CSS Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
-
-    <!-- JavaScript -->
-    <script defer src="script.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
@@ -37,11 +32,11 @@
         .minecraft-title {
             font-size: 50px;
             font-weight: bold;
-            text-shadow: 6px 6px 0px #070707, 10px 10px 0px rgba(0, 0, 0, 0.5);
+            text-shadow: 6px 6px #070707, 10px 10px rgba(0, 0, 0, 0.5);
             color: #F1C40F; /* Minecraft 金色 */
-            text-transform: uppercase;
-            margin-bottom: 40px;
-            letter-spacing: 3px;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: floatUpDown 2.5s ease-in-out infinite; /* 添加浮動動畫 */
         }
 
         /* 外框容器 */
@@ -51,12 +46,12 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: rgb(182, 182, 182, 0.75);
-            text-shadow: 3px 2px 0px rgb(51, 51, 51);
+            text-shadow: 3px 2px rgb(51, 51, 51);
             color: #ffffff;
             padding: 20px;
             border: 10px solid #333333;
             image-rendering: pixelated;
-            box-shadow: 5px 5px 0px rgb(106, 106, 106); /* 深綠色邊框 */
+            box-shadow: 5px 5px rgb(106, 106, 106); /* 深綠色邊框 */
             display: inline-block;
             width: 800px; /* 固定寬度 */
             height: 400px;
@@ -65,7 +60,7 @@
         /* Loading 框框 */
         .loading-box {
             position: absolute;
-            width: 92%;
+            width: 91%;
             height: 100px; /* 固定高度 */
             background: rgba(255, 255, 255, 0);
             padding: 15px;
@@ -94,6 +89,12 @@
         @keyframes float {
             0% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes floatUpDown {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); } /* 向上浮動 */
             100% { transform: translateY(0); }
         }
 
@@ -128,7 +129,7 @@
 </head>
 <body>
 <div class="container">
-    <!-- MINECRAFT 文字 -->
+    <!-- MINECRAFT標題 -->
     <h1 class="minecraft-title">Minecraft</h1>
 
     <!-- 提示文字 -->
@@ -164,7 +165,15 @@
         </div>
     </div>
 
+    <audio id="bg-music" loop>
+        <source src="music/MC背景音乐合集(更新至1.21）.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="progress-sound">
+        <source src="music/successful_hit.ogg" type="audio/mpeg">
+    </audio>
 </div>
+
 <script>
     // 隨機顯示 Minecraft 提示文字
     const tips = [
@@ -191,6 +200,20 @@
         tipElement.innerText = tips[randomIndex];
     }
 
+    // 播放背景音樂
+    function playBackgroundMusic() {
+        let music = document.getElementById("bg-music");
+        music.volume = 0.5; // 設定音量
+        music.play().catch(error => console.log("音樂播放被阻擋，使用者需要點擊畫面開始播放。"));
+    }
+
+    // 播放進度條音效
+    function playProgressSound() {
+        let sound = document.getElementById("progress-sound");
+        sound.currentTime = 0; // 重新播放
+        sound.play();
+    }
+
     // 進度條動畫（循環）
     function startProgressBar() {
         let progress = 0;
@@ -198,10 +221,14 @@
             if (progress < 20) {
                 let cell = document.getElementById(`cell-${progress + 1}`);
                 cell.style.background = "#34c924"; // 綠色（讀取進度）
+                playProgressSound(); // 播放"滴"音效
                 progress++;
             } else {
-                resetProgressBar();
-                progress = 0;
+                // 清空進度條，重新開始
+                setTimeout(() => {
+                    resetProgressBar();
+                    progress = 0;
+                }, 2000);
             }
         }, 2000);
     }
@@ -213,8 +240,10 @@
         }
     }
 
+
     // 等頁面載入後執行
     window.onload = function() {
+        playBackgroundMusic();
         showRandomTip();
         startProgressBar();
     };
