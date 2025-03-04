@@ -175,81 +175,83 @@
 </div>
 
 <script>
-    // 隨機顯示 Minecraft 提示文字
-    const tips = [
-        "Don't dig straight down!",
-        "Creepers gonna creep...",
-        "Punching trees gives you wood.",
-        "Diamonds are a miner's best friend!",
-        "Use torches to keep mobs away.",
-        "Build a house before nightfall!",
-        "The Endermen don’t like eye contact!",
-        "Gold tools break easily but are super fast!",
-        "Fishing is a great way to get rare items.",
-        "Redstone is the key to automation!"
-    ];
-
-    // 顯示隨機提示
-    function showRandomTip() {
-        const tipElement = document.getElementById("tip");
-
-        // 產生新的隨機索引
-        let randomIndex = Math.floor(Math.random() * tips.length);
-
-        // 更新畫面上的提示
-        tipElement.innerText = tips[randomIndex];
-    }
-
-    // 播放背景音樂
-    function playBackgroundMusic() {
-        let music = document.getElementById("bg-music");
-        music.volume = 0.5; // 設定音量
-        music.play().catch(error => console.log("音樂播放被阻擋，使用者需要點擊畫面開始播放。"));
-    }
-
-    // 播放進度條音效
-    function playProgressSound() {
-        let sound = document.getElementById("progress-sound");
-        sound.currentTime = 0; // 重新播放
-        sound.play();
-    }
-
-    // 進度條動畫（循環）
-    function startProgressBar() {
+    document.addEventListener("DOMContentLoaded", function () {
         let progress = 0;
-        let interval = setInterval(() => {
-            if (progress < 20) {
-                let cell = document.getElementById(`cell-${progress + 1}`);
-                cell.style.background = "#34c924"; // 綠色（讀取進度）
-                playProgressSound(); // 播放"滴"音效
-                progress++;
-            } else {
-                // 清空進度條，重新開始
-                setTimeout(() => {
-                    resetProgressBar();
-                    progress = 0;
-                }, 2000);
-            }
-        }, 2000);
-    }
+        let progressInterval;
+        const tipElement = document.getElementById("tip");
+        const bgMusic = document.getElementById("bg-music");
+        const progressSound = document.getElementById("progress-sound");
+        const tips = [
+            "Don't dig straight down!",
+            "Creepers gonna creep...",
+            "Punching trees gives you wood.",
+            "Diamonds are a miner's best friend!",
+            "Use torches to keep mobs away.",
+            "Build a house before nightfall!",
+            "The Endermen don’t like eye contact!",
+            "Gold tools break easily but are super fast!",
+            "Fishing is a great way to get rare items.",
+            "Redstone is the key to automation!"
+        ];
 
-    // 重置進度條
-    function resetProgressBar() {
-        for (let i = 1; i <= 20; i++) {
-            document.getElementById(`cell-${i}`).style.background = "#777777"; // 回復灰色
+        function showRandomTip() {
+            let randomIndex = Math.floor(Math.random() * tips.length);
+            tipElement.innerText = tips[randomIndex];
         }
-    }
 
+        function playBackgroundMusic() {
+            bgMusic.volume = 0.5;
+            bgMusic.play().catch(() => {
+                console.log("音樂播放被阻擋，等待使用者互動...");
+            });
+        }
 
-    // 等頁面載入後執行
-    window.onload = function() {
-        playBackgroundMusic();
+        function playProgressSound() {
+            progressSound.currentTime = 0; // 確保從頭播放
+            progressSound.play().catch(() => {
+                console.log("進度條音效播放失敗");
+            });
+        }
+
+        function startProgressBar() {
+            progress = 0;
+            resetProgressBar();
+
+            progressInterval = setInterval(() => {
+                if (progress < 20) {
+                    let cell = document.getElementById(`cell-${progress + 1}`);
+                    if (cell) {
+                        cell.style.background = "#34c924"; // 綠色（讀取進度）
+                    }
+                    playProgressSound();
+                    progress++;
+                } else {
+                    clearInterval(progressInterval); // 停止當前計時器
+                    setTimeout(startProgressBar, 2000); // 2 秒後重置並重新開始
+                }
+            }, 2000);
+        }
+
+        function resetProgressBar() {
+            for (let i = 1; i <= 20; i++) {
+                let cell = document.getElementById(`cell-${i}`);
+                if (cell) {
+                    cell.style.background = "#777777"; // 回復灰色
+                }
+            }
+        }
+
+        // **用戶點擊任意位置後播放音樂**
+        document.addEventListener("click", function () {
+            playBackgroundMusic();
+        });
+
+        // 初始化
         showRandomTip();
+        setInterval(showRandomTip, 2000); // 每 2 秒更換提示
         startProgressBar();
-    };
+    });
 
-    // 設置每 2 秒更新一次提示
-    setInterval(showRandomTip, 2000);
 </script>
 </body>
 </html>
